@@ -1,4 +1,4 @@
--- client.lua
+
 local pedModel = `cs_bankman` -- Change ped model here
 local pedCoords = vector3(-540.10, -218.94, 37.65 -1) -- Ped location
 local pedHeading = 3
@@ -7,7 +7,7 @@ CreateThread(function()
     RequestModel(pedModel)
     while not HasModelLoaded(pedModel) do Wait(0) end
 
-    -- Ensure ped spawns on ground
+
     local groundZ = pedCoords.z
     local found, z = GetGroundZFor_3dCoord(pedCoords.x, pedCoords.y, pedCoords.z, false)
     if found then groundZ = z end
@@ -18,7 +18,6 @@ CreateThread(function()
     FreezeEntityPosition(ped, true)
     SetPedCanRagdollFromPlayerImpact(ped, false)
 
-    -- Blip
     local blip = AddBlipForCoord(pedCoords.x, pedCoords.y, groundZ)
     SetBlipSprite(blip, 280)
     SetBlipDisplay(blip, 4)
@@ -29,16 +28,16 @@ CreateThread(function()
     AddTextComponentString("City Info & Starter Pack")
     EndTextCommandSetBlipName(blip)
 
-    -- ox_target interaction
+  
     exports.ox_target:addLocalEntity(ped, {
         {
             name = 'city_info',
             icon = 'fa-solid fa-circle-info',
-            label = 'Ask about the City / Claim Starter Pack',
+            label = 'Ask about the City / Starter Pack',
             onSelect = function()
                 lib.registerContext({
                     id = 'city_info_menu',
-                    title = 'Welcome to Storm Networks',
+                    title = 'Welcome to Storm Systems',
                     options = {
                         {
                             title = 'Jobs',
@@ -73,10 +72,9 @@ CreateThread(function()
     })
 end)
 
--- Info Events
 RegisterNetEvent('cityinfo:jobs', function()
     lib.alertDialog({
-        header = 'Jobs in Storm Networks',
+        header = 'Jobs in Storm Systems',
         content = [[
 - Legal jobs: Police, EMS, Mechanic, Transit, Window Cleaning, Trucking, Mining, Fishing
 - Illegal jobs: Drugs, Robberies, Boosting, Heists]],
@@ -140,3 +138,4 @@ end)
 RegisterNetEvent('starterpack:alreadyClaimed', function()
     lib.notify({title = "Starter Pack", description = "You have already claimed your starter pack!", type = "error"})
 end)
+
