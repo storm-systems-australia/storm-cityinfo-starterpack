@@ -1,30 +1,26 @@
 local Config = {
-
 }
-
 CreateThread(function()
     while not NetworkIsSessionStarted() do
         Wait(100)
     end
     Wait(1000)
 
-    -- Load model
+
     RequestModel(Config.PedModel)
     while not HasModelLoaded(Config.PedModel) do Wait(10) end
 
-    -- Get proper ground Z
     local groundZ = Config.StarterPed.z
     local found, z = GetGroundZFor_3dCoord(Config.StarterPed.x, Config.StarterPed.y, Config.StarterPed.z, false)
     if found then groundZ = z end
 
-    -- Create ped on ground
     local ped = CreatePed(4, Config.PedModel, Config.StarterPed.x, Config.StarterPed.y, groundZ, Config.StarterPed.w, false, true)
     SetEntityInvincible(ped, true)
     FreezeEntityPosition(ped, true)
     SetBlockingOfNonTemporaryEvents(ped, true)
     SetPedCanRagdollFromPlayerImpact(ped, false)
 
-    -- Add map blip
+
     local blip = AddBlipForCoord(Config.StarterPed.x, Config.StarterPed.y, groundZ)
     SetBlipSprite(blip, Config.Blip.sprite)
     SetBlipColour(blip, Config.Blip.color)
@@ -36,7 +32,7 @@ CreateThread(function()
 end)
 
 
--- ox_target interaction
+
 CreateThread(function()
     exports.ox_target:addBoxZone({
         coords = Config.StarterPed,
@@ -62,7 +58,6 @@ CreateThread(function()
     })
 end)
 
--- Notifications
 RegisterNetEvent('starterpack:claimed', function()
     lib.notify({title = "Starter Pack", description = "You have successfully claimed your starter pack!", type = "success"})
 end)
@@ -70,3 +65,4 @@ end)
 RegisterNetEvent('starterpack:alreadyClaimed', function()
     lib.notify({title = "Starter Pack", description = "You have already claimed your starter pack!", type = "error"})
 end)
+
